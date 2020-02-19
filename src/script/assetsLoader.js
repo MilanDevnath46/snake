@@ -22,5 +22,9 @@ export default [
     {
         key: "game-over",
         type:"image"
+    },
+    {
+        key:"game-font",
+        type:"image"
     }
 ]
