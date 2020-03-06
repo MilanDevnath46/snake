@@ -1,6 +1,6 @@
 import { noOfCellsOnX, noOfCellsOnY, cellLength } from "../script/gride.js";
 
-export default class Snake{
+export default class Snake {
     constructor(scene, x, y) {
         this.body = scene.add.group({
             defaultKey: "body",
@@ -15,7 +15,7 @@ export default class Snake{
         this.alive = true;
         this.updater = true;
         this.moveTime = 0;
-        this.speed = 100;
+        this.speed = 150;
     };
 
     update(time) {
@@ -33,7 +33,7 @@ export default class Snake{
             if (this.direction.y > 0) {
                 //counter clockwiae
                 this.direction.setTo(this.direction.y, -this.direction.x);
-               
+
             } else if (this.direction.y < 0) {
                 //clockwise
                 this.direction.setTo(-this.direction.y, this.direction.x);
@@ -44,58 +44,57 @@ export default class Snake{
 
     turnLeft() {
         if (this.updater) {
-            if (this.direction.y > 0  ) {
-                 //clockwise
+            if (this.direction.y > 0) {
+                //clockwise
                 this.direction.setTo(-this.direction.y, this.direction.x);
-                
+
             } else if (this.direction.y < 0) {
-                 //counter clockwiae
-                 this.direction.setTo(this.direction.y, -this.direction.x);
+                //counter clockwiae
+                this.direction.setTo(this.direction.y, -this.direction.x);
             }
 
-         this.updater = false;
+            this.updater = false;
         }
     };
 
     turnUp() {
         if (this.updater) {
-            if (this.direction.x > 0 ) {
-                 //counter clockwiae
-                 this.direction.setTo(this.direction.y, -this.direction.x);
-                
+            if (this.direction.x > 0) {
+                //counter clockwiae
+                this.direction.setTo(this.direction.y, -this.direction.x);
+
             } else if (this.direction.x < 0) {
                 //clockwise
                 this.direction.setTo(-this.direction.y, this.direction.x);
             }
-          this.updater = false;
+            this.updater = false;
         }
-      
-    };  
-    
+
+    };
+
     turnDown() {
         if (this.updater) {
             if (this.direction.x > 0) {
                 //clockwise
                 this.direction.setTo(-this.direction.y, this.direction.x);
             } else if (this.direction.x < 0) {
-                 //counter clockwiae
-                 this.direction.setTo(this.direction.y, -this.direction.x);
+                //counter clockwiae
+                this.direction.setTo(this.direction.y, -this.direction.x);
             }
-          
+
             this.updater = false;
         }
-     
+
     };
 
     selfColid() {
         return Phaser.Actions.GetFirst(
-            this.body.children.entries,
-            { x: this.head.x, y: this.head.y },
+            this.body.children.entries, { x: this.head.x, y: this.head.y },
             1
         );
     };
 
-    
+
     move(time) {
         console.log("move");
         this.headPosition.setTo(
@@ -108,7 +107,7 @@ export default class Snake{
             this.headPosition.x,
             this.headPosition.y,
             1,
-           this.tailPosition
+            this.tailPosition
         );
 
         if (this.selfColid()) {
@@ -124,9 +123,16 @@ export default class Snake{
         this.body.create(this.tailPosition.x, this.tailPosition.y).setOrigin(0);
     };
 
-    collideWithFood(food){
+    collideWithFood(food) {
+        let foodEaten = 0;
         if (this.head.x === food.x && this.head.y === food.y) {
             this.grow();
+            foodEaten++;
+            if (foodEaten >= 1 && this.speed != 30) {
+                this.speed -= 5;
+                foodEaten == 0;
+                console.log(this.speed);
+            }
 
             // update speed of snake upon 5 food eaten
             return true
